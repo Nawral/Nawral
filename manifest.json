@@ -1,0 +1,35 @@
+{
+	"manifest_version":1,
+	"type":"WebApp",
+	"meta":{
+		"name":"Nawral",
+		"version":"0.1.5",
+		"minimum-overwolf-version":"0.77.10",
+		"author":"Shadaez",
+		"icon":"IconMouseOver.png",
+		"icon_gray":"IconMouseNormal.png",
+		"description":"Nawral seeks to give d/Deaf/HoH players the benefit of knowing the direction sounds are coming from."
+	},
+	"permissions":["Microphone", "GameInfo"],
+	"data": {
+		"start_window":"MainWindow",
+		"windows":{
+			"MainWindow":{
+					"file":"Files/index.html",
+					"transparent": false,
+					"resizable": false,
+					"size": {"width": 350, "height": 500},
+					"min_size": {"width": 350, "height": 500},
+					"max_size": {"width": 350, "height": 500}
+				},
+			"SubWindow":{
+					"file":"Files/subwindow.html",
+					"transparent": true,
+					"resizable": false,
+					"size":{"width":400, "height":300},
+					"clickthrough": true,
+					"in_game_only": false
+				}
+		}
+	}
+}
