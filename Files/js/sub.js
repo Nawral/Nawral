@@ -108,7 +108,7 @@ $(function(){
           lctx.fillRect(0+            (values.outward?lCanvas.width:0), y,  lBarWidth*values.scale*(values.outward?-1:1) + .5, barHeight);
         }
         if(rBarWidth > 0){
-          rctx.fillStyle = color + (Math.pow(lBarWidth/255 + 1, values.opacity) - 1) + ')';
+          rctx.fillStyle = color + (Math.pow(rBarWidth/255 + 1, values.opacity) - 1) + ')';
           rctx.fillRect(rCanvas.width-(values.outward?rCanvas.width:0), y, -rBarWidth*values.scale*(values.outward?-1:1) + .5, barHeight);
         }
 
