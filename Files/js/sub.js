@@ -78,13 +78,13 @@ $(function(){
     rAnalyser.getByteFrequencyData(rArray);
     lctx.clearRect(0, 0, lCanvas.width, lCanvas.height);
     rctx.clearRect(0, 0, rCanvas.width, rCanvas.height);
-    var barHeight = Math.round(lCanvas.height / lAnalyser.frequencyBinCount) - values.gap,
+    var barHeight = Math.floor(lCanvas.height / lAnalyser.frequencyBinCount) - values.gap,
         y = 0,
         i,
         x,
         lBarWidth,
         rBarWidth,
-        color = 'rgba('+values.color.r+','+values.color.b+','+values.color.g+',';
+        color = 'rgba('+values.color.r+','+values.color.g+','+values.color.b+',';
     if(values.alternate){
       for(i = lAnalyser.frequencyBinCount; i--;) {
         x = values.bass?-i+lAnalyser.frequencyBinCount:i;
