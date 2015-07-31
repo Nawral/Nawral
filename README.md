@@ -12,7 +12,7 @@ http://www.overwolf.com/download/
 7. If you still need audio output, open Voicemeeter, in the Audio Output setting choose the output that goes to your Headphones/Speakers
 8. If you communicate with your microphone, make sure the programs using it have the input device manually set to your microphone, not to default device
 9. Download the latest version of Narwal
-https://github.com/Nawral/Nawral/releases
+https://github.com/Nawral/Nawral/releases (don't use the links on the top of this page, that's for the source code!)
 10. Open the Overwolf browser, navigate to overwolf://packages/
 11. Click Install Extension
 12. Browse to where the extension was downloaded and select it.
