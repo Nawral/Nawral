@@ -6,6 +6,7 @@
 			padding-left: 0;
 			list-style: none;
 			width: 100%;
+			margin: 0;
 		}
 		ul ul{
 			padding-left: 15px;
@@ -14,6 +15,18 @@
 			width: 100%;
 			margin: 5px 0;
 			margin-left: 3px;
+		}
+		.bar.open{
+			background: green;
+		}
+		.bar{
+			margin: 0;
+			background: red;
+			height: 5px;
+			width: 100%;
+		}
+		.color{
+			text-shadow: 1px 1px #aaa;
 		}
 		input, select, button{
 			width: 100px;
@@ -30,9 +43,18 @@
 		.tab{
 				padding-left: 10px;
 		}
+		form{
+			margin: 0;
+		}
 		form .ng-invalid{
 			outline-color: red;
 			border-color: red;
+		}
+		a{
+			color: white;
+		}
+		a:visited{
+			color: white;
 		}
 		</style>
 		<title>Nawral Settings</title>
@@ -45,28 +67,32 @@
 		<div id="content" ng-controller="nawralMainController">
 			<form name="settings">
 				<ul>
-					<li>Width:										<input  ng-model="values.width"				type="number" step=".1"></input></li>
-					<li>Height:										<input  ng-model="values.height"			type="number" step=".1"></input></li>
-					<li>Offset:										<input  ng-model="values.offset"			type="number"></input></li>
-					<li>Gap: 											<input 	ng-model="values.gap" 				type="number" step=".5"></input></li>
-					<li>Smoothing Time Constant:	<input  ng-model="values.stc"					type="number" min="0" max="1000"></input></li>
-					<li>Number of Bars:						<select ng-model="values.bars"				type="number" ng-value={{values.bars}}><option value="16">16</option><option value="32">32</option><option value="64">64</option><option value="128">128</option><option value="256">256</option><option value="512">512</option><option value="1024">1024</option></select></li>
-					<li>Scale:										<input  ng-model="values.scale"				type="number" step=".1"></input></li>
-					<li>FPS:											<input  ng-model="values.fps"					type="number" min="0"></input></li>
-					<li>Opacity Scale:						<input  ng-model="values.opacity"			type="number" step=".1"></input></li>
+					<li class="bar" ng-class="{open: isWindowOpen}"></li>
+					<li>Bar Width:								<input  ng-model="values.barWidth"				type="number" step=".1"></input></li>
+					<li>Height:										<input  ng-model="values.height"					type="number" step=".1"></input></li>
+					<li>Offset:										<input  ng-model="values.offset"					type="number"></input></li>
+					<li>Gap: 											<input 	ng-model="values.gap" 						type="number" step=".5"></input></li>
+					<li>Seperation:								<input  ng-model="values.seperation"			type="number" step="1"></input></li>
+					<li>Smoothing Time Constant:	<input  ng-model="values.stc"							type="number" min="0" max="1000"></input></li>
+					<li>Opacity:									<input  ng-model="values.opacity"					type="number" step=".1"></input></li>
+					<li>Minimum Db:								<input  ng-model="values.minDecibels" 		type="number" max="{{values.maxDecibels-1}}"></input></li>
+					<li>Maximum Db:								<input  ng-model="values.maxDecibels" 		type="number" min="{{values.minDecibels+1}}"></input></li>
+					<li>FPS:											<input  ng-model="values.fps"							type="number" min="0"></input></li>
+					<li>Number of Bars:						<select ng-model="values.bars"						type="number" ng-value={{values.bars}}><option value="16">16</option><option value="32">32</option><option value="64">64</option><option value="128">128</option><option value="256">256</option><option value="512">512</option><option value="1024">1024</option></select></li>
+					<li class='color' ng-style="{color: 'rgb('+values.color.r+','+values.color.g+','+values.color.b+')'}">Color:</li>
 					<li>
-						Color:
 						<ul>
-							<li>R:										<input  ng-model="values.color.r"			type="number" min="0" max="255"></input></li>
-							<li>G:										<input  ng-model="values.color.g"			type="number" min="0" max="255"></input></li>
-							<li>B:										<input  ng-model="values.color.b"			type="number" min="0" max="255"></input></li>
+							<li>R:										<input  ng-model="values.color.r"					type="number" min="0" max="255"></input></li>
+							<li>G:										<input  ng-model="values.color.g"					type="number" min="0" max="255"></input></li>
+							<li>B:										<input  ng-model="values.color.b"					type="number" min="0" max="255"></input></li>
 						</ul>
 					</li>
-					<li>Outward:										<input  ng-model="values.outward"			type="checkbox" ng-disabled="values.alternate"></input></li>
-					<li>Subtractive:							<input  ng-model="values.subtractive"	type="checkbox" ng-disabled="values.alternate"></input></li>
-					<li>Alternate:								<input  ng-model="values.alternate"		type="checkbox"></input></li>
-					<li>Bass first:								<input  ng-model="values.bass"				type="checkbox"></input></li>
-					<li><button ng-click="openSub()">Open Overlay</button></li>
+					<li>Outward:									<input  ng-model="values.outward"	  			type="checkbox" ng-disabled="values.alternate"></input></li>
+					<li>Subtractive:							<input  ng-model="values.subtractive"			type="checkbox" ng-disabled="values.alternate"></input></li>
+					<li>Alternate:								<input  ng-model="values.alternate"				type="checkbox"></input></li>
+					<li>Bass first:								<input  ng-model="values.bassFirst"				type="checkbox"></input></li>
+					<li>Dynamic Opacity:          <input	ng-model="values.dynamicOpacity"	type="checkbox"></input></li>
+					<li><a href="" ng-click="openSub('Help')">Help</a><button ng-click="openSub('Overlay')">Open Overlay</button></li>
 				</ul>
 			</form>
 		</div>

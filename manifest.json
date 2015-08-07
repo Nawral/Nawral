@@ -3,7 +3,7 @@
 	"type":"WebApp",
 	"meta":{
 		"name":"Nawral",
-		"version":"0.1.71",
+		"version":"0.2.0",
 		"minimum-overwolf-version":"0.77.10",
 		"author":"Shadaez",
 		"icon":"IconMouseOver.png",
@@ -18,18 +18,25 @@
 					"file":"Files/index.html",
 					"transparent": false,
 					"resizable": false,
-					"size": {"width": 350, "height": 500},
-					"min_size": {"width": 350, "height": 500},
-					"max_size": {"width": 350, "height": 500}
+					"size": {"width": 350, "height": 560},
+					"min_size": {"width": 350, "height": 560},
+					"max_size": {"width": 350, "height": 560}
 				},
-			"SubWindow":{
+			"Overlay":{
 					"file":"Files/subwindow.html",
 					"transparent": true,
 					"resizable": false,
 					"size":{"width":400, "height":300},
 					"clickthrough": true,
 					"in_game_only": false
-				}
+				},
+			"Help":{
+				"file":"help/index.html",
+				"transparent": false,
+				"resizable": true,
+				"size":{"width":800, "height":600},
+				"in_game_only": false
+			}
 		}
 	}
 }

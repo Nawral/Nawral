@@ -3,46 +3,65 @@ $(function(){
   navigator.getUserMedia = navigator.webkitGetUserMedia;
   var lCanvas = document.getElementById('left'),
       rCanvas = document.getElementById('right'),
+      gap     = document.getElementById('gap'),
+      body    = document.getElementsByTagName('body')[0],
       audioContext = new webkitAudioContext(),
       rafID,
       lAnalyser,
       rAnalyser,
-      rArray,
       lArray,
+      rArray,
+      width,
       lctx = lCanvas.getContext('2d'),
       rctx = rCanvas.getContext('2d'),
       constraints =   {audio: { mandatory: { echoCancellation: false } } };
   window.addEventListener('storage', updateValues);
-  updateValues();
 
-  navigator.getUserMedia(constraints, analyse, function(e){
-    throw(e);
-  });
+  updateValues();
+  startAudio();
+
+  function startAudio(){
+    navigator.getUserMedia(constraints, analyse, function(e){});
+    setTimeout(function(){
+      if(!window.stream){
+        startAudio();
+      }
+    }, 1000);
+  }
 
   function updateValues(e){
     if(rafID){
         window.cancelAnimationFrame(rafID);
         clearInterval(rafID);
     }
+
     values = JSON.parse(localStorage.getItem('settings'));
+
     if(lAnalyser){
       lAnalyser.fftSize = rAnalyser.fftSize = values.bars * 2;
+      rAnalyser.minDecibels = lAnalyser.minDecibels = values.minDecibels;
+      rAnalyser.maxDecibels = lAnalyser.maxDecibels = values.maxDecibels;
       rAnalyser.smoothingTimeConstant = lAnalyser.smoothingTimeConstant = values.stc / 1000;
+
+      lArray = new Uint8Array(lAnalyser.frequencyBinCount);
+      rArray = new Uint8Array(rAnalyser.frequencyBinCount);
     }
+
     overwolf.windows.getCurrentWindow(function(d){
       overwolf.windows.maximize(d.window.id, function(){
-        lCanvas.height = 0;
-        rCanvas.height = 0;
+        width = Math.ceil(d.window.width * (values.barWidth/100));
+        lCanvas.height = rCanvas.height = lCanvas.width = rCanvas.width = 0;
         if(values.alternate){
           lCanvas.style.marginRight = rCanvas.style.marginLeft= 0;
           rCanvas.width = 0;
-          lCanvas.width  = 255 * 2 * values.scale;
+          gap.style.width = 0;
+          lCanvas.width  = width * 2;
         } else {
-          lCanvas.width  = Math.ceil(rCanvas.width  = 255 * values.scale);
-          lCanvas.style.marginRight = rCanvas.style.marginLeft= ((d.window.width-rCanvas.width*2)/100)*values.width/2 + 'px';
+          lCanvas.width  = rCanvas.width = width;
+          gap.style.width = values.seperation + '%';
         }
-        lCanvas.height = rCanvas.height = Math.ceil(d.window.height * (values.height/100) + values.gap + 1);
-        lCanvas.style.marginTop   = rCanvas.style.marginTop = values.offset + 'px';
+        lCanvas.height = rCanvas.height = Math.ceil(d.window.height * (values.height/100));
+        body.style.marginTop = values.offset + '%';
       });
     });
     rafID = frameLimit(updateAnalyser, values.fps);
@@ -57,16 +76,9 @@ $(function(){
     lAnalyser = audioContext.createAnalyser();
     rAnalyser = audioContext.createAnalyser();
     input.channelInterpretation = 'explicit';
-    lAnalyser.fftSize = values.bars * 2;
-    rAnalyser.fftSize = values.bars * 2;
-    rAnalyser.minDecibels = lAnalyser.minDecibels = -90;
-    rAnalyser.maxDecibels = lAnalyser.maxDecibels = -10;
-    rAnalyser.smoothingTimeConstant = lAnalyser.smoothingTimeConstant = values.stc / 1000;
+    updateValues();
 
     lAnalyser.channelCount = rAnalyser.channelCount = 2;
-
-    lArray = new Uint8Array(lAnalyser.frequencyBinCount);
-    rArray = new Uint8Array(rAnalyser.frequencyBinCount);
 
     input.connect(splitter);
     splitter.connect(lAnalyser, 0, 0);
@@ -78,41 +90,43 @@ $(function(){
     rAnalyser.getByteFrequencyData(rArray);
     lctx.clearRect(0, 0, lCanvas.width, lCanvas.height);
     rctx.clearRect(0, 0, rCanvas.width, rCanvas.height);
-    var barHeight = Math.floor(lCanvas.height / lAnalyser.frequencyBinCount) - values.gap,
+    var barHeight = Math.floor(lCanvas.height / lAnalyser.frequencyBinCount),
         y = 0,
         i,
         x,
         lBarWidth,
         rBarWidth,
         color = 'rgba('+values.color.r+','+values.color.g+','+values.color.b+',';
+        barHeight = barHeight<=.5?.5:barHeight;
     if(values.alternate){
       for(i = lAnalyser.frequencyBinCount; i--;) {
-        x = values.bass?-i+lAnalyser.frequencyBinCount:i;
+        x = values.bassFirst?-i+lAnalyser.frequencyBinCount:i;
 
-        lBarWidth = lArray[x] - rArray[x];
+        barWidth = (lArray[x] - rArray[x])/255;
 
-        lctx.fillStyle = color + (Math.pow(Math.abs(lBarWidth)/255 + 1, values.opacity) - 1) + ')';
-        lctx.fillRect(lCanvas.width/2, y, -lBarWidth*values.scale, barHeight);
+        x==10?console.log(-barWidth*width):'';
+        lctx.fillStyle = color + (values.dynamicOpacity?(Math.pow(Math.abs(barWidth) + 1, values.opacity) - 1):values.opacity) + ')';
+        lctx.fillRect(lCanvas.width/2, Math.ceil(y), -barWidth*width, barHeight<=0?1:barHeight<=1?1:Math.ceil(barHeight));
 
-        y += barHeight + values.gap;
+        y += barHeight;
       }
     } else {
       for(i = lAnalyser.frequencyBinCount; i--;) {
-        x = values.bass?-i+lAnalyser.frequencyBinCount:i;
+        x = values.bassFirst?-i+lAnalyser.frequencyBinCount:i;
 
-        lBarWidth = values.subtractive?lArray[x] - rArray[x]:lArray[x];
-        rBarWidth = values.subtractive?rArray[x] - lArray[x]:rArray[x];
+        lBarWidth = (values.subtractive?lArray[x] - rArray[x]:lArray[x])/255;
+        rBarWidth = (values.subtractive?rArray[x] - lArray[x]:rArray[x])/255;
 
         if(lBarWidth > 0){
-          lctx.fillStyle = color + (Math.pow(lBarWidth/255 + 1, values.opacity) - 1) + ')';
-          lctx.fillRect(0+            (values.outward?lCanvas.width:0), y,  lBarWidth*values.scale*(values.outward?-1:1) + .5, barHeight);
+          lctx.fillStyle = color + (values.dynamicOpacity?(Math.pow(lBarWidth + 1, values.opacity) - 1):values.opacity) + ')';
+          lctx.fillRect(0+            (values.outward?lCanvas.width:0), Math.ceil(y) + values.gap,  lBarWidth*width*(values.outward?-1:1), barHeight<=1?1:Math.ceil(barHeight) - values.gap);
         }
         if(rBarWidth > 0){
-          rctx.fillStyle = color + (Math.pow(rBarWidth/255 + 1, values.opacity) - 1) + ')';
-          rctx.fillRect(rCanvas.width-(values.outward?rCanvas.width:0), y, -rBarWidth*values.scale*(values.outward?-1:1) + .5, barHeight);
+          rctx.fillStyle = color + (values.dynamicOpacity?(Math.pow(rBarWidth + 1, values.opacity) - 1):values.opacity) + ')';
+          rctx.fillRect(rCanvas.width-(values.outward?rCanvas.width:0), Math.ceil(y) + values.gap, -rBarWidth*width*(values.outward?-1:1), barHeight<=1?1:Math.ceil(barHeight) - values.gap);
         }
 
-        y += barHeight + values.gap;
+        y += barHeight;
       }
     }
   }

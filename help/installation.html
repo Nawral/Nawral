@@ -1,0 +1,82 @@
+<html ng-app="NawralHelp">
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>Nawral Help</title>
+	</head>
+	<body>
+		<style>
+      *{
+        box-sizing: border-box;
+      }
+			body, html{
+				padding: 0;
+				margin: 0;
+				background: black;
+				color: white;
+			}
+      ul, li{
+        padding: 0;
+        list-style-type: none;
+        display: block;
+        margin: auto;
+				min-height: 165px;
+      }
+      .aside, li{
+        position: relative;
+        border-radius: 10px;
+        border: 1px solid black;
+        background: #222;
+        padding: 10px;
+        display: inline-block;
+      }
+      li{
+        display: block;
+        width: 600px;
+        margin-bottom: 20px;
+      }
+      .aside{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+      .defaults:before, .units:before{
+        display: inline-block;
+        padding-right: 5px;
+      }
+      .defaults::before{
+        content: "Default:";
+      }
+      .units::before{
+        content: "Unit:";
+      }
+      li p{
+        margin-top: 50px;
+      }
+      h3{
+        margin-top: 0;
+				display: inline-block;
+    	}
+			li img{
+				display: inline-block;
+				float: right;
+				border-radius: 10px;
+			}
+			img{
+				display: block;
+				margin: auto;
+			}
+		</style>
+    <h1>Installation:</h1>
+    <p>
+      Until Overwolf approves my app you'll have to manually download it from https://github.com/Nawral/Nawral/releases browse to the folder it's located at and install it.<br/>
+      <img src="img/browser.gif"><br/>
+			<img src="img/extension.gif"><br/>
+      Open your recording devices.<br/>
+      <img src="img/recdevices.gif"><br/>
+      Show disabled and hidden devices. Set stereomix as default. (Make sure whichever device supports stereomix is set to your default sound output as well).<br/>
+      <img src="img/stereomix.gif"><br/>
+      If stereomix isn't there, you may have an unsupported soundcard or your audio drivers may not be installed. You can install the audio drivers for your PC, or install a virtual audio device, like Voicemeeter.
+			A guide on that will come later.
+    </p>
+	</body>
+</html>

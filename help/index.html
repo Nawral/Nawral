@@ -1,0 +1,107 @@
+<html ng-app="NawralHelp">
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>Nawral Help</title>
+	</head>
+	<body>
+		<style>
+      *{
+        box-sizing: border-box;
+      }
+			body, html{
+				padding: 0;
+				margin: 0;
+				background: black;
+				color: white;
+			}
+      ul, li{
+        padding: 0;
+        list-style-type: none;
+        display: block;
+        margin: auto;
+				min-height: 165px;
+      }
+      .aside, li{
+        position: relative;
+        border-radius: 10px;
+        border: 1px solid black;
+        background: #222;
+        padding: 10px;
+        display: inline-block;
+      }
+      li{
+        display: block;
+        width: 600px;
+        margin-bottom: 20px;
+      }
+      .aside{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+      .defaults:before, .units:before{
+        display: inline-block;
+        padding-right: 5px;
+      }
+      .defaults::before{
+        content: "Default:";
+      }
+      .units::before{
+        content: "Unit:";
+      }
+      li p{
+        margin-top: 50px;
+      }
+      h3{
+        margin-top: 0;
+				display: inline-block;
+    	}
+			li img{
+				display: inline-block;
+				float: right;
+				border-radius: 10px;
+			}
+		</style>
+		<script src="../Files/js/jquery.js"></script>
+		<script src="../Files/js/angular.js"></script>
+		<script>
+			angular.module('NawralHelp', [])
+			.config(['$compileProvider', function($compileProvider){
+				$compileProvider.imgSrcSanitizationWhitelist(/.*/);
+			}])
+			.controller('nawralHelpController', ['$scope', '$interval', function($scope, $interval){
+				$scope.settings = {barWidth:     	{title: 'Bar Width', unit: '%',			 			perf: 'High', default: '10', string: 'Width of each channel.'},
+													height:        	{title: 'Height', unit: '%',				 			perf: 'High', default: '20', string: 'Height of entire channel.'},
+													offset:        	{title: 'Offset', unit: '%',				 			perf: 'None', default: '0', string: 'Vertical offset of bars, if you want them to be lower or higher. Highly recommended in alternate mode.'},
+													gap:           	{title: 'Gap', unit: 'Pixels',	 					perf: 'None', default: '0', string: 'The spacing between bars.'},
+													seperation:    	{title: 'Seperation', unit: '%',				 	perf: 'Improves Performance', default: '25', string: 'The spacing between left and right bars. Does nothing in alternate mode.'},
+													stc: 						{title: 'Time Constant', unit: 'N/A',		 	perf: 'None', default: '800', string: 'A moving average constant, higher  means smoother bar transitions.'},
+													opacity:       	{title: 'Opacity', unit: 'N/A',				 		perf: 'None', default: '1', string: 'If dynamic opacity is on, this is what the bar width\'s exponent in determining the opacity of bars. It\'s the direct opacity otherwise.'},
+													mindB:       		{title: 'Minimum dB', unit: 'dB',				 	perf: 'None', default: '-90', string: 'Sets the minimum volume before bars will appear. Raising this can be benificial but may cause quieter sounds to go unnoticed. The smaller the gap between this and max dB is, the more accurate the data will be.'},
+													maxdB:       		{title: 'Maximum dB', unit: 'dB',				 	perf: 'None', default: '-15', string: 'Sets what volume the maximum bar width will be set at. Lowering this may cause bars to clip (hit max width before max volume is reached).'},
+													FPS:           	{title: 'FPS', unit: 'N/A',						 		perf: 'High', default: '30', string: 'Frames per second the overlay will run at. I recommend 30 FPS. 0 sets it to your refresh rate.'},
+													bars:     			{title: 'Number of Bars', unit: 'N/A',		perf: 'Minor', default: '16', string: 'Number of bars that will be on the overlay. Higher requires slightly more processing power, due to more drawing happening.'},
+													color:         	{title: 'Color', unit: 'N/A',		 					perf: 'None', default: '(125, 125, 125)', string: 'The color of the bars. May appear much darker on the overlay if you\'re using opacity.'},
+													outward:       	{title: 'Outward', unit: 'Bool',		 			perf: 'None', default: 'true', string: 'Horizontally flips the directions of the bars, so they\'re pointing outwards.'},
+													subtractive:   	{title: 'Subtractive', unit: 'Bool',			perf: 'None', default: 'false', string: 'Subtracts the left channel from the right channel, and vice versa. Meaning only the side that\'s louder will be visible. Forced on in alternate mode. Bars may be shorter most of the time due to this.'},
+													alternate:     	{title: 'Alternate', unit: 'Bool',		 		perf: 'Improves Performance', default: 'false', string: 'Alternate mode forces subtractive, and only uses one channel of bars. If the sound is coming from the left, the bar will move left, vice versa. It\'s recommended that you set the offset so the bars don\'t block the crosshair'},
+													bassFirst:     	{title: 'Bass first', unit: 'Bool',		 		perf: 'None', default: 'false', string: 'Makes bass appear at the top if on. Treble otherwise.'},
+													dynamicOpacity:	{title: 'Dynamic Opacity', unit: 'Bool',	perf: 'Medium', default: 'true', string: 'If on, the opacity changes with bar width, and the opacity value becomes the exponent for determining opacity.'}
+					};
+				}]);
+		</script>
+    <h1>Settings:</h1>
+    <ul ng-controller="nawralHelpController">
+      <li ng-repeat="(key, setting) in settings">
+				<h3>{{setting.title}}</h3>
+				<img ng-src="img/{{key}}.gif">
+				<div>
+					Unit: {{setting.unit}} </br>
+					Default: {{setting.default}} </br>
+					Performance Impact: {{setting.perf}}
+				</div>
+				<p>{{setting.string}}</p>
+			</li> 
+    </ul>
+	</body>
+</html>
