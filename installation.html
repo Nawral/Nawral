@@ -1,7 +1,8 @@
 <html ng-app="NawralHelp">
 	<head>
 		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <title>Nawral Help</title>
+		<link rel="shortcut icon" href="IconMouseOver.png">
+    <title>Nawral</title>
 	</head>
 	<body>
 		<style>
@@ -73,27 +74,90 @@
 				margin: auto;
 				padding: 10px;
 			}
-			.header{
-				height: 100%;
+			#header{
+				width: 100%;
 				margin: auto;
-				background: headerbg.
 			}
+			#header-overlay{
+				position: absolute;
+				top: 0;
+				width: 100%;
+				padding: 50px;
+				color: #AAA;
+			}
+			.links, .links li{
+				min-height: 0;
+				display: inline-block;
+				min-width: 0;
+				text-align: right;
+			}
+			.links{
+				position: absolute;
+				display: block;
+				width: 175px;
+				right: 50px;
+				top: 100px;
+			}
+			#header-overlay .links li{
+				width: initial;
+				padding: 5px 10px;
+				height: initial;
+			}
+			.bar{
+				position: absolute;
+				top: 0;
+				background: black;
+				height: 55px;
+				left: 0;
+				right: 0;
+				color: white;
+			}
+			.bar h1{
+				margin: 0;
+				font-size: 50px;
+				display: inline;
+			}
+			.bar span{
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				font-size: 15px;
+			}
+			.links a{
+				color: white;
+			}
+
 		</style>
-		<div class='header'></header>
-		<div class='container'>
+		<video autoplay loop poster="polina.jpg" id="header" style="-webkit-filter:grayscale(100%); -moz-filter:grayscale(100%); -ms-filter:grayscale(100%); filter:grayscale(100%);">
+			<source src="nawral.webm" type="video/webm">
+		</video>
+		<div id="header-overlay">
+			<div class="bar"><h1>Nawral</h1><span>Nawral seeks to give d/Deaf/HoH players the benefit of knowing the direction sounds are coming from.</span></div>
+			<ul class="links">
+				<li style="font-size: 1.25em"><a href="https://github.com/Nawral/Nawral/releases">Download</li>
+				<li><a href="http://www.overwolf.com/">Overwolf</a></li>
+				<li><a href="https://github.com/Nawral/Nawral">Source Code (Github)</a></li>
+			</ul>
+		</div>
+		<div class="container">
 	    <h1>Installation:</h1>
 	    <p>
 	      Until Overwolf approves my app you'll have to manually download it from https://github.com/Nawral/Nawral/releases browse to the folder it's located at and install it.<br/>
+				Open the Overwolf browser.
 	      <img src="help/img/browser.gif"><br/>
+				Navigate to extensions.
 				<img src="help/img/extension.gif"><br/>
+				Browse to the folder where the file was downloaded and install. Don't launch it yet!
 	      Open your recording devices.<br/>
 	      <img src="help/img/recdevices.gif"><br/>
-	      Show disabled and hidden devices. Set stereomix as default. (Make sure whichever device supports stereomix is set to your default sound output as well).<br/>
+	      Show disabled and hidden devices. Set stereomix as default device. (Make sure whichever device supports stereomix is set to your default sound output as well).<br/>
 	      <img src="help/img/stereomix.gif"><br/>
 	      If stereomix isn't there, you may have an unsupported soundcard or your audio drivers may not be installed. You can install the audio drivers for your PC, or install a virtual audio device, like Voicemeeter.
 				A guide on that will come later.
+
+				Now you can start Nawral.
 	    </p>
+			<p>(A better site is coming soon!)</p>
 		</div>
-		<div><a href="https://github.com/Nawral/Nawral">Github</a></div>
 	</body>
 </html>
